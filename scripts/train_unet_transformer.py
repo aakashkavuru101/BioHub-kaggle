@@ -1131,6 +1131,14 @@ def train(
     )
     if unet_weights is not None:
         state = torch.load(unet_weights, map_location="cpu", weights_only=True)
+        # Checkpoints saved from the full UNetNodeTransformer carry an
+        # "unet." prefix and extra transformer keys; strip down to the bare
+        # UNet state dict so the warm start actually applies.
+        if any(k.startswith("unet.") for k in state):
+            state = {
+                k[len("unet."):]: v for k, v in state.items()
+                if k.startswith("unet.")
+            }
         missing, unexpected = unet.load_state_dict(state, strict=False)
         print(f"  UNet weights: {len(missing)} missing, {len(unexpected)} unexpected", flush=True)
 
