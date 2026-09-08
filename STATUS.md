@@ -17,6 +17,16 @@
 - Verification: 107 self-contained tests pass; 16 data-backed checks await the training data.
 - Submission conversion: the official sample CSV completes a CSV -> GEFF -> CSV round trip with 20 rows across four datasets.
 
+## Submissions
+
+- 2026-09-08: ref 56089783 — official UNet+Transformer baseline (kernel `aakashkavuru/biohub-official-baseline` v5, T4), ILP linking, det_thr=0.99. Score: pending.
+
+## Workspace notes
+
+- Kaggle input mounts vary; the notebook resolves competition and artifacts paths dynamically, pins `machine_shape: NvidiaTeslaT4` (P100/sm_60 crashes the image's PyTorch), and fails fast on incompatible GPUs.
+- This is a code competition: CSV upload via `kaggle competitions submit` is rejected (400). Submit a kernel version's output instead via `KaggleApi().competition_submit_code(kernel=<owner>/<slug>, kernel_version=N, file_name="submission.csv")`.
+- Baseline inference (4 test videos, T4): ~12 min GPU.
+
 ## Next
 
 1. Download the competition training data into `data/train/`.
