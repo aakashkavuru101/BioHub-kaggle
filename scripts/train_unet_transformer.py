@@ -1014,6 +1014,7 @@ def train(
     det_loss_weight: float = 1e1,
     det_neg_weight: float = 1e-2,
     max_iters: int | None = None,
+    max_minutes: float | None = None,
     debug_video: Path | None = None,
     seed: int | None = None,
     max_frames: int | None = None,
@@ -1164,6 +1165,7 @@ def train(
     save_path = output_dir / "edge_predictor_best.pth"
     pbar = tqdm(range(n_epochs), desc="Training", disable=False)
     print(f"Detection loss: weight={det_loss_weight}, neg_weight={det_neg_weight}", flush=True)
+    t_train_start = time.monotonic()
 
     for epoch in pbar:
         t0 = time.monotonic()
@@ -1197,6 +1199,12 @@ def train(
             f"train={train_time:.1f}s test={test_time:.1f}s",
             flush=True,
         )
+
+        elapsed_min = (time.monotonic() - t_train_start) / 60
+        if max_minutes is not None and elapsed_min >= max_minutes:
+            print(f"Time budget reached ({elapsed_min:.1f} min >= {max_minutes} min); "
+                  f"stopping after epoch {epoch}.", flush=True)
+            break
 
     print(f"\nBest score (acc*recall): {best_score:.4f}, saved to {save_path}", flush=True)
     if save_path.exists():
@@ -1240,6 +1248,9 @@ def main() -> None:
                         help="Per-voxel weight for non-GT (negative) voxels in detection loss (default: 1e-2).")
     parser.add_argument("--max-iters", type=int, default=None,
                         help="Max training iterations per epoch. None = full epoch.")
+    parser.add_argument("--max-minutes", type=float, default=None,
+                        help="Stop training after this many minutes (finishes the "
+                             "current epoch first, keeping the best checkpoint).")
     parser.add_argument("--debug-video", type=str, default=None,
                         help="Path to a single dataset for quick debugging. "
                              "Ignores --fold and splits file; trains and evaluates on this video only.")
@@ -1283,6 +1294,7 @@ def main() -> None:
             det_loss_weight=args.det_loss_weight,
             det_neg_weight=args.det_neg_weight,
             max_iters=args.max_iters,
+            max_minutes=args.max_minutes,
             debug_video=debug_video,
             window_size=args.window_size,
             pool_kernel_um=args.pool_kernel_um,
