@@ -19,7 +19,16 @@
 
 ## Submissions
 
-- 2026-09-08: ref 56089783 — official UNet+Transformer baseline (kernel `aakashkavuru/biohub-official-baseline` v5, T4), ILP linking, det_thr=0.99. **Public score: 0.810.** Leaderboard leader: 0.962.
+| Date | Config | Ref | Public score |
+|------|--------|-----|--------------|
+| 09-08 | det=0.99, div=1.0 (baseline, v5) | 56089783 | **0.810** |
+| 09-08 | det=0.95, div=1.0 (v10) | 56094892 | 0.794 |
+| 09-08 | det=0.99, div=0.2 (v9) | 56094319 | 0.772 |
+| 09-09 | det=0.95, div=0.2 (v11) | 56108764 | pending |
+
+Sweep takeaway: the official default (det=0.99, div=1.0) is the best quadrant —
+looser detection or cheaper divisions both lose score. Training kernel set to
+DET_GRID=[0.99, 0.995], DIV_GRID=[1.0]. Leaderboard leader: 0.962.
 
 ## Workspace notes
 
