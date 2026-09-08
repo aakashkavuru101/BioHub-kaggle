@@ -32,7 +32,7 @@ DET_GRID=[0.99, 0.995], DIV_GRID=[1.0]. Leaderboard leader: 0.962.
 
 ## Workspace notes
 
-- Kaggle input mounts vary; the notebook resolves competition and artifacts paths dynamically, pins `machine_shape: NvidiaTeslaT4` (P100/sm_60 crashes the image's PyTorch), and fails fast on incompatible GPUs.
+- Kaggle input mounts vary; the notebook resolves competition and artifacts paths dynamically (competition mount can appear as `/kaggle/input/<slug>` or `/kaggle/input/competitions/<slug>` — search to any depth), pins `machine_shape: NvidiaTeslaT4` (P100/sm_60 crashes the image's PyTorch), and fails fast on incompatible GPUs.
 - This is a code competition: CSV upload via `kaggle competitions submit` is rejected (400). Submit a kernel version's output instead via `KaggleApi().competition_submit_code(kernel=<owner>/<slug>, kernel_version=N, file_name="submission.csv")`.
 - Baseline inference (4 test videos, T4): ~12 min GPU.
 
