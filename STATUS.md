@@ -19,7 +19,7 @@
 
 ## Submissions
 
-- 2026-09-08: ref 56089783 — official UNet+Transformer baseline (kernel `aakashkavuru/biohub-official-baseline` v5, T4), ILP linking, det_thr=0.99. Score: pending.
+- 2026-09-08: ref 56089783 — official UNet+Transformer baseline (kernel `aakashkavuru/biohub-official-baseline` v5, T4), ILP linking, det_thr=0.99. **Public score: 0.810.** Leaderboard leader: 0.962.
 
 ## Workspace notes
 
